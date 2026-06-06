@@ -1,0 +1,33 @@
+az group create --location eastus --name myResourceGroup
+
+az acr create --resource-group myResourceGroup \
+    --name mycontainerregistry62453805 --sku Basic
+
+Login server: mycontainerregistry62453805.azurecr.io
+
+Build and Push an image from a Docker file
+
+echo FROM mcr.microsoft.com/hello-world > Dockerfile
+
+az acr build --image sample/hello-world:v1  \
+    --registry mycontainerregistry62453805 \
+    --file Dockerfile .
+
+OR
+
+az acr build --image sample/hello-world:v1      --registry mycontainerregistry62453805     --file DockerFile .
+
+sample/hello-world is Repository inside Azure Container Registry
+
+az acr repository list --name mycontainerregistry62453805 --output table
+
+az acr repository show-tags --name mycontainerregistry62453805 \
+    --repository sample/hello-world --output table
+
+Run the image in this ACR
+
+az acr run --registry mycontainerregistry62453805 \
+    --cmd '$Registry/sample/hello-world:v1' /dev/null
+
+$Registry to specify the registry where you run the command.
+The cmd parameter runs the container in it's default configuration but cmd supports other docker run parameters or even other docker commands.
