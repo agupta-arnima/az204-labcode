@@ -1,0 +1,29 @@
+Create Azure Container instance resources in Azure
+Create and Deploy a container
+Verify the container is running
+
+az group create --location eastus --name myResourceGroup
+
+DNS Name must be unique
+
+DNS_NAME_LABEL=aci-example-62457590
+
+az container create --resource-group myResourceGrouplod62457590 \
+    --name mycontainer \
+    --image mcr.microsoft.com/azuredocs/aci-helloworld \
+    --ports 80 \
+    --dns-name-label $DNS_NAME_LABEL --location eastus \
+    --os-type Linux \
+    --cpu 1 \
+    --memory 1.5
+
+Verify the container is running
+
+az container show --resource-group myResourceGrouplod62457590     --name mycontainer     --query "{FQDN:ipAddress.fqdn, IPAddress: ipAddress.ip, Port: ipAddress.ports[0].port ProvisioningState:provisioningState}"     --out table
+
+FQDN                                    ProvisioningState
+--------------------------------------  -------------------
+aci-example-62457590.eastus.azurecontainer.io         Succeeded
+
+
+
