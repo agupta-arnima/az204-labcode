@@ -1,0 +1,94 @@
+resourceGroup=myResourceGrouplod62449526
+location=eastus
+accountName=storageacct$RANDOM
+
+az storage account create --name $accountName \
+    --resource-group $resourceGroup \
+    --location $location \
+    --sku Standard_LRS 
+
+echo $accountName
+
+userPrincipal=$(az rest --method GET --url https://graph.microsoft.com/v1.0/me \
+    --headers 'Content-Type=application/json' \
+    --query userPrincipalName --output tsv)
+
+echo $userPrincipal
+
+az storage account show --name $accountName --resource-group $resourceGroup --query id
+
+resourceID=$(az storage account show --name $accountName \
+    --resource-group $resourceGroup \
+    --query id --output tsv)
+
+echo $resourceID
+
+az role assignment create --assignee $userPrincipal --role "Storage Blob Data Owner" --scope $resourceID
+
+az role assignment create --assignee $userPrincipal \
+    --role "Storage Blob Data Owner" \
+    --scope $resourceID
+
+=========================================================================================
+dotnet add package Azure.Storage.Blobs
+dotnet add package Azure.Identity
+
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Identity;
+
+Console.WriteLine("Azure Blob Storage exercise\n");
+
+// Create a DefaultAzureCredentialOptions object to configure the DefaultAzureCredential
+DefaultAzureCredentialOptions options = new()
+{
+    ExcludeEnvironmentCredential = true,
+    ExcludeManagedIdentityCredential = true
+};
+
+// Run the examples asynchronously, wait for the results before proceeding
+await ProcessAsync();
+
+Console.WriteLine("\nPress enter to exit the sample application.");
+Console.ReadLine();
+
+async Task ProcessAsync()
+{
+    // CREATE A BLOB STORAGE CLIENT
+    // Create a credential using DefaultAzureCredential with configured options
+    string accountName = "YOUR_ACCOUNT_NAME"; // Replace with your storage account name
+
+    // Use the DefaultAzureCredential with the options configured at the top of the program
+    DefaultAzureCredential credential = new DefaultAzureCredential(options);
+
+    // Create the BlobServiceClient using the endpoint and DefaultAzureCredential
+    string blobServiceEndpoint = $"https://{accountName}.blob.core.windows.net";
+    BlobServiceClient blobServiceClient = new BlobServiceClient(new Uri(blobServiceEndpoint), credential);
+
+
+    // CREATE A CONTAINER
+    
+
+    // CREATE A LOCAL FILE FOR UPLOAD TO BLOB STORAGE
+
+
+
+    // UPLOAD THE FILE TO BLOB STORAGE
+
+
+
+    // LIST BLOBS IN THE CONTAINER
+
+
+
+    // DOWNLOAD THE BLOB TO A LOCAL FILE
+
+
+}
+==========================================================================
+az login
+
+dotnet run
+
+cd data
+ls
