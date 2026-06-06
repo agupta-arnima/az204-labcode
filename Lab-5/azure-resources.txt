@@ -1,0 +1,36 @@
+az group create --location eastus --name myResourceGroup
+
+resourceGroup=myResourceGrouplod62451274
+accountName=cosmosexercise62451274
+
+az cosmosdb create --name $accountName \
+    --resource-group $resourceGroup
+
+az cosmosdb show --name $accountName \
+    --resource-group $resourceGroup \
+    --query "documentEndpoint" --output tsv
+
+https://cosmosexercise62451274.documents.azure.com:443/
+
+az cosmosdb keys list --name $accountName \
+    --resource-group $resourceGroup \
+    --query "primaryMasterKey" --output tsv
+
+woTtsspcK5CG85l4qZKZEj9x5rMnPbSO6rFt7dUVivqpf7YHKmhNaKsDWqL5x8RXwExDFvGs6suMACDbv31JUA==
+
+=========================================================================
+mkdir cosmosdb
+cd cosmosdb
+
+dotnet new console
+
+dotnet add package Microsoft.Azure.Cosmos --version 3.*
+dotnet add package Newtonsoft.Json --version 13.*
+dotnet add package dotenv.net
+
+touch .env
+code .env
+
+dotnet build
+
+dotnet run
