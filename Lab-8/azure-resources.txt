@@ -72,3 +72,8 @@ az containerapp create \
   "service": null,
   "targetLabel": ""
 }
+
+my-container-app.jollydune-1dc5c262.eastus.azurecontainerapps.io
+1. Container app name - my-container-app
+2. Environment unique identifier - jollydune-1dc5c262
+3. Region name - eastus
